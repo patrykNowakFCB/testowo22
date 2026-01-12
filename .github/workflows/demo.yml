@@ -1,17 +1,22 @@
 name: Deploy website
 on:
-  [push]
-  # branches:
-  #   - main
+  push:
+    branches:
+      - main
 jobs:
   test:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+        node: [16, 18, 19]
     steps:
       - name: Get code
         uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
